@@ -1,3 +1,5 @@
+One can operate vlc remotely using telnet.
+
 1. Start vlc in rc mode 
 	vlc --intf rc --rc-host 127.0.0.1:1234
 2. cConnect to host port using telnet
@@ -45,3 +47,7 @@ public class SimpleRCConnect {
 		s.close();
 	}
 }
+
+More info : 
+http://stackoverflow.com/questions/9009559/java-play-pause-vlc
+
