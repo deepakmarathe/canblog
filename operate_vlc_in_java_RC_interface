@@ -30,11 +30,6 @@ import org.apache.commons.net.io.SocketInputStream;
 import org.apache.commons.net.io.SocketOutputStream;
 
 public class SimpleRCConnect {
-	/*
-	 	Start vlc.
-	 	Tools -> Preferences -> Select Show All -> Interface -> Main interface -> RC Typed in 127.0.0.1:4444
-		then in java just open a stream with that ip and port and send your commands. For example "pause" will play (or pause it if it's already playing)
-	*/
 	
 	public static void main(String arhs[]) throws Exception{
 		Socket s = new Socket("localhost", 4444);
@@ -42,24 +37,11 @@ public class SimpleRCConnect {
 		SocketOutputStream sout = new SocketOutputStream(s, s.getOutputStream());
 		SocketInputStream sin = new SocketInputStream(s, s.getInputStream());
 		
-		//sout.write("licence\n".getBytes());
 		sout.write("add /home/deepakm/Music/regulus.mp3\n".getBytes());
 		sout.flush();
-		Thread.sleep(300);
-		//sout.write("stop\n".getBytes());
 		sout.flush();
-		int c;
-		StringBuilder sb = new StringBuilder();
-		/*
-		while((c= sin.read())!= -1){
-			sb.append(c);
-		}
-		*/
-		System.out.println(sb.toString());
 		
-		sin.close();
 		sout.close();
 		s.close();
 	}
-
-
+}
