@@ -1,0 +1,65 @@
+1. Start vlc in rc mode 
+	vlc --intf rc --rc-host 127.0.0.1:1234
+2. cConnect to host port using telnet
+	telnet 127.0.0.1 1234
+		Trying 127.0.0.1...
+		Connected to 127.0.0.1.
+		Escape character is '^]'.
+	status
+		status: returned 0 (no error)
+
+More info:
+http://www.sureskumar.com/RemoteVLC/
+http://getluky.net/2006/04/19/vlcs-awesome-rc-interface/
+
+
+
+Alternatively once can also send commands to vlc using Java by connecting to the socket.
+	1. Start vlc.
+	 	Tools -> Preferences -> Select Show All -> Interface -> Main interface -> RC Typed in 127.0.0.1:a_port
+		then in java just open a stream with that ip and port and send your commands. For example "pause" will play (or pause it if it's already playing)
+	
+	2. Simple java program to connect to the socket and write to the outputStream of that socket.
+
+package com.deepakm.vlc.waveform.test;
+
+import java.io.FileOutputStream;
+import java.net.Socket;
+
+import org.apache.commons.net.io.SocketInputStream;
+import org.apache.commons.net.io.SocketOutputStream;
+
+public class SimpleRCConnect {
+	/*
+	 	Start vlc.
+	 	Tools -> Preferences -> Select Show All -> Interface -> Main interface -> RC Typed in 127.0.0.1:4444
+		then in java just open a stream with that ip and port and send your commands. For example "pause" will play (or pause it if it's already playing)
+	*/
+	
+	public static void main(String arhs[]) throws Exception{
+		Socket s = new Socket("localhost", 4444);
+
+		SocketOutputStream sout = new SocketOutputStream(s, s.getOutputStream());
+		SocketInputStream sin = new SocketInputStream(s, s.getInputStream());
+		
+		//sout.write("licence\n".getBytes());
+		sout.write("add /home/deepakm/Music/regulus.mp3\n".getBytes());
+		sout.flush();
+		Thread.sleep(300);
+		//sout.write("stop\n".getBytes());
+		sout.flush();
+		int c;
+		StringBuilder sb = new StringBuilder();
+		/*
+		while((c= sin.read())!= -1){
+			sb.append(c);
+		}
+		*/
+		System.out.println(sb.toString());
+		
+		sin.close();
+		sout.close();
+		s.close();
+	}
+
+
